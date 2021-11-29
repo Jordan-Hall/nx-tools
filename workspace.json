@@ -1,8 +1,6 @@
 {
   "version": 2,
   "projects": {
-    "solidjs": "packages/solidjs",
-    "solidjs-e2e": "e2e\\solidjs-e2e",
     "vite": "packages/vite",
     "vite-e2e": "e2e\\vite-e2e"
   }

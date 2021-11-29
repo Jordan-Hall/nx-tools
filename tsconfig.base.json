@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@libertydev/vite": ["packages/vite/src/index.ts"],
-      "libertydev/solidjs": ["packages/solidjs/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
