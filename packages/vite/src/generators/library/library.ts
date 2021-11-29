@@ -244,30 +244,20 @@ function normalizeOptions(host: Tree, options: Schema): NormalizedSchema {
     importPath,
   };
 
-  if (options.appProject) {
-    const appProjectConfig = getProjects(host).get(options.appProject);
-
-    if (appProjectConfig.projectType !== 'application') {
-      throw new Error(
-        `appProject expected type of "application" but got "${appProjectConfig.projectType}"`
-      );
-    }
-
-    try {
-      normalized.appMain = appProjectConfig.targets.build.options.main;
-      normalized.appSourceRoot = normalizePath(appProjectConfig.sourceRoot);
-    } catch (e) {
-      throw new Error(
-        `Could not locate project main for ${options.appProject}`
-      );
-    }
-  }
-
   return normalized;
 }
 
 function updateLibPackageNpmScope(host: Tree, options: NormalizedSchema) {
+  const { libsDir } = getWorkspaceLayout(host)
   return updateJson(host, `${options.projectRoot}/package.json`, (json) => {
+    json.main = `dist/${libsDir}/${options.projectDirectory}/index.umd.js`,
+    json.module = `dist/${libsDir}/${options.projectDirectory}/index.es.js`,
+    json.exports = {
+      ".": {
+        "import": "./dist/index.es.js",
+        "require": "./dist/index.umd.js"
+      }
+    }
     json.name = options.importPath;
     return json;
   });
