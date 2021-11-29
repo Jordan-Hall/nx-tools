@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "solidjs",
+  "version": "0.0.1",
+  "generators": {
+    "solidjs": {
+      "factory": "./src/generators/solidjs/generator",
+      "schema": "./src/generators/solidjs/schema.json",
+      "description": "solidjs generator"
+    }
+  }
+}

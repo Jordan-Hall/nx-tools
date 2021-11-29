@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "solidjs": "packages/solidjs",
+    "solidjs-e2e": "e2e\\solidjs-e2e"
+  }
+}
