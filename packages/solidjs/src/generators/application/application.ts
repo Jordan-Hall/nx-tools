@@ -10,7 +10,8 @@ import {
   addDependenciesToPackageJson,
   generateFiles,
   updateProjectConfiguration,
-  readProjectConfiguration
+  readProjectConfiguration,
+  updateJson
 } from '@nrwl/devkit';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import { applicationGenerator as viteApplicationGenerator } from '@libertydev/vite';
@@ -70,12 +71,19 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
     }
   );
 
+  updateJson(host, `${appProjectRoot}/tsconfig.json`, (json) => {
+    json.compilerOptions.jsx = "preserve";
+    json.compilerOptions.jsxImportSource = "solid-js";
+    return json;
+  });
+
   const projectName = names(schema.name).name;
 
   const projectConfiguration = readProjectConfiguration(host, projectName);
   projectConfiguration.targets['build'].options.viteConfig = viteConfigPath
   projectConfiguration.targets['preview'].options.viteConfig = viteConfigPath
   projectConfiguration.targets['serve'].options.viteConfig = viteConfigPath
+
 
   updateProjectConfiguration(host, projectName, projectConfiguration);
 
