@@ -21,7 +21,7 @@ export default async function* runExecutor(
   const viteBaseConfig = await ensureUserConfig(baseConfig, context.configurationName);
   let extendedConfig: UserConfigExport;
   if (options.viteConfig !== '@libertydev/vite/plugin/vite') {
-    extendedConfig = await ensureUserConfig((await import('../../../plugins/vite')).default, context.configurationName);
+    extendedConfig = await ensureUserConfig((await import(options.viteConfig)).default, context.configurationName);
   }
   const actualViteConfig = deepmerge(viteBaseConfig, extendedConfig) as UserConfig;
 
