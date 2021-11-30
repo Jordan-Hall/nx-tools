@@ -8,7 +8,7 @@
       "schema": "./src/generators/application/schema.json",
       "aliases": ["app"],
       "x-type": "application",
-      "description": "Create a node application"
+      "description": "Create a solidjs application"
     },
     "init": {
       "factory": "./src/generators/init/init",
@@ -16,6 +16,13 @@
       "description": "Initialize the @libertydev/solidjs plugin",
       "aliases": ["ng-add"],
       "hidden": true
+    },
+    "library": {
+      "factory": "./src/generators/library/library",
+      "schema": "./src/generators/library/schema.json",
+      "aliases": ["lib"],
+      "x-type": "library",
+      "description": "Create a solidjs library"
     }
   },
   "schematics": {
@@ -32,6 +39,13 @@
       "aliases": ["app"],
       "x-type": "application",
       "description": "Create a node application"
+    },
+    "library": {
+      "factory": "./src/generators/library/library#librarySchematic",
+      "schema": "./src/generators/library/schema.json",
+      "aliases": ["lib"],
+      "x-type": "library",
+      "description": "Create a solidjs library"
     }
   }
 }

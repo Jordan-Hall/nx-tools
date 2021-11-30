@@ -8,7 +8,7 @@
       "schema": "./src/generators/application/schema.json",
       "aliases": ["app"],
       "x-type": "application",
-      "description": "Create a node application"
+      "description": "Create a vite application"
     },
     "init": {
       "factory": "./src/generators/init/init",
@@ -16,6 +16,13 @@
       "description": "Initialize the @libertydev/vite plugin",
       "aliases": ["ng-add"],
       "hidden": true
+    },
+    "library": {
+      "factory": "./src/generators/library/library",
+      "schema": "./src/generators/library/schema.json",
+      "aliases": ["lib"],
+      "x-type": "library",
+      "description": "Create a vite library"
     }
   },
   "schematics": {
@@ -31,7 +38,14 @@
       "schema": "./src/generators/application/schema.json",
       "aliases": ["app"],
       "x-type": "application",
-      "description": "Create a node application"
+      "description": "Create a vite application"
+    },
+    "library": {
+      "factory": "./src/generators/library/library#librarySchematic",
+      "schema": "./src/generators/library/schema.json",
+      "aliases": ["lib"],
+      "x-type": "library",
+      "description": "Create a vite library"
     }
   }
 }
