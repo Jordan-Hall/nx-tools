@@ -1,6 +1,6 @@
 {
   "name": "@libertydev/vite",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
@@ -10,5 +10,8 @@
     "@nrwl/linter": "^13.2.3",
     "@nrwl/devkit": "^13.2.3",
     "vite": "^2.6.14"
+  },
+  "repository": {
+    "url": "https://github.com/Jordan-Hall/nx-tools/tree/master/packages/vite"
   }
 }
