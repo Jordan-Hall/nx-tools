@@ -74,6 +74,7 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
   updateJson(host, `${appProjectRoot}/tsconfig.json`, (json) => {
     json.compilerOptions.jsx = "preserve";
     json.compilerOptions.jsxImportSource = "solid-js";
+    json.types = ["vite/client"]
     return json;
   });
 
