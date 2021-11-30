@@ -19,7 +19,7 @@ import { SolidVitePluginVersion } from './lib/versions';
 import { join } from 'path';
 import { solidjsVersion } from '../../utils/version';
 
-function updateLibPackage(host: Tree, options: Schema, appProjectRoot: string) {
+function updateLibPackage(host: Tree, appProjectRoot: string) {
   return updateJson(host, `${appProjectRoot}/package.json`, (json) => {
     json.peerDependencies = {
       'solid-js': solidjsVersion
@@ -37,8 +37,8 @@ export async function libraryGenerator(host: Tree, schema: Schema) {
 
   const fileName = schema.pascalCaseFiles ? 'Example' : 'example';
 
-  const { appsDir } = getWorkspaceLayout(host);
-  const appProjectRoot = normalizePath(`${appsDir}/${appDirectory}`);
+  const { libsDir } = getWorkspaceLayout(host);
+  const appProjectRoot = normalizePath(`${libsDir}/${appDirectory}`);
 
   tasks.push(await viteLibraryGenerator(host, {
     ...schema,
@@ -61,14 +61,12 @@ export async function libraryGenerator(host: Tree, schema: Schema) {
   }
 
   host.delete(
-    `${appProjectRoot}/src/app/${fileName}.spec.ts`
+    `${appProjectRoot}/src/lib/${fileName}.spec.ts`
   );
   host.delete(
-    `${appProjectRoot}/src/app/${fileName}.ts`
+    `${appProjectRoot}/src/lib/${fileName}.ts`
   );
-  host.delete(
-    `${appProjectRoot}/index.html`
-  );
+
 
   generateFiles(
     host,
@@ -87,23 +85,24 @@ export async function libraryGenerator(host: Tree, schema: Schema) {
     return json;
   });
 
-  updateLibPackage(host, schema, appProjectRoot)
-
-  const projectName = names(schema.name).name;
-
-  const projectConfiguration = readProjectConfiguration(host, projectName);
-  projectConfiguration.targets['library'].options.viteConfig = viteConfigPath
-  projectConfiguration.targets['library'].options.globals = { 'solid-js': 'solid-js' }
-  projectConfiguration.targets['library'].options.external = ['solid-js']
-
-
-  updateProjectConfiguration(host, projectName, projectConfiguration);
-
   if (!schema.skipFormat) {
     await formatFiles(host);
   }
 
-  return runTasksInSerial(...tasks);
+  await runTasksInSerial(...tasks);
+  updateLibPackage(host, appProjectRoot)
+
+  const projectName = names(schema.name).name;
+
+  const projectConfiguration = readProjectConfiguration(host, projectName);
+  projectConfiguration.targets['build'].options.viteConfig = viteConfigPath
+  projectConfiguration.targets['build'].options.globals = { 'solid-js': 'solid-js' }
+  projectConfiguration.targets['build'].options.external = ['solid-js']
+  projectConfiguration.targets['build'].options.entryFile = `lib/src/index.tsx`
+
+
+  updateProjectConfiguration(host, projectName, projectConfiguration);
+  return;
 }
 
 export default libraryGenerator;

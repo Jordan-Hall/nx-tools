@@ -145,8 +145,8 @@ function addProject(host: Tree, options: NormalizedSchema) {
       options: {
         outputPath: `dist/${libsDir}/${options.projectDirectory}`,
         packageJson: `${options.projectRoot}/package.json`,
-        assets: `${options.projectRoot}/assets`,
-        entryFile: `${options.projectRoot}/src/index.ts`,
+        assets: `/assets`,
+        entryFile: `lib/src/index.ts`,
         viteConfig: `@libertydev/vite/plugins/vite-package`,
       },
     };

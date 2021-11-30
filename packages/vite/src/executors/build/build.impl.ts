@@ -14,13 +14,12 @@ export default async function runExecutor(
   options: Schema,
   context: ExecutorContext,
 ) {
-  const project = context.workspace.projects[context.projectName];
   const viteBaseConfig = await ensureUserConfig(baseConfig, context.configurationName);
 
   await build({
     ...viteBaseConfig,
     configFile: options.viteConfig === '@libertydev/vite/plugin/vite' ? false : joinPathFragments(`${context.root}/${options.viteConfig}`),
-    root: project.root,
+    root: context.cwd,
     base: options.baseHref,
     publicDir: options.assets,
     build: {

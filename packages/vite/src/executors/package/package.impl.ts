@@ -16,7 +16,6 @@ export default async function runExecutor(
   options: Schema,
   context: ExecutorContext,
 ) {
-  const project = context.workspace.projects[context.projectName];
   const viteBaseConfig = await ensureUserConfig(baseConfig({
     entry: options.entryFile,
     external: options.external ?? [],
@@ -27,7 +26,7 @@ export default async function runExecutor(
   await build({
     ...viteBaseConfig,
     configFile: options.viteConfig === '@libertydev/vite/plugin/vite-package' ? false : joinPathFragments(`${context.root}/${options.viteConfig}`),
-    root: project.root,
+    root: context.cwd,
     build: {
       ...viteBaseConfig.build,
       outDir: options.outputPath,
