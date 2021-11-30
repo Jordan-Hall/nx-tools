@@ -15,7 +15,7 @@
       "implementation": "./src/executors/preview/preview.impl",
       "schema": "./src/executors/preview/schema.json",
       "description": "preview executor"
-    },
+    }
   },
   "builders": {
     "build": {

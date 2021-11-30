@@ -1,5 +1,5 @@
 import { Schema } from './schema';
-import { createServer, printHttpServerUrls, UserConfig, UserConfigExport, resolveConfig, InlineConfig } from 'vite';
+import { createServer, printHttpServerUrls, UserConfig, UserConfigExport, InlineConfig } from 'vite';
 import { ExecutorContext } from '@nrwl/devkit';
 import { deepmerge } from '../../utils/deep-merge';
 import baseConfig from '../../../plugins/vite';
