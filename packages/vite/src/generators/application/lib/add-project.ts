@@ -37,21 +37,8 @@ function createBuildTarget(options: NormalizedSchema): TargetConfiguration {
     defaultConfiguration: 'production',
     options: {
       outputPath: joinPathFragments('dist', options.appProjectRoot),
-      index: joinPathFragments(options.appProjectRoot, 'src/index.html'),
       baseHref: '/',
-      main: joinPathFragments(
-        options.appProjectRoot,
-        `src/main.ts`
-      ),
-      polyfills: joinPathFragments(
-        options.appProjectRoot,
-        'src/polyfills.ts'
-      ),
-      tsConfig: joinPathFragments(options.appProjectRoot, 'tsconfig.app.json'),
-      assets: [
-        joinPathFragments(options.appProjectRoot, 'src/assets'),
-      ],
-      scripts: [],
+      assets: joinPathFragments(options.appProjectRoot, 'src/assets'),
       viteConfig: '@libertydev/vite/plugins/vite',
     },
     configurations: {
@@ -77,13 +64,25 @@ function createServeTarget(options: NormalizedSchema): TargetConfiguration {
   return {
     executor: '@libertydev/vite:serve',
     options: {
-      buildTarget: `${options.projectName}:build`,
-      hmr: true,
+      outputPath: joinPathFragments('dist', options.appProjectRoot),
+      baseHref: '/',
+      assets: joinPathFragments(options.appProjectRoot, 'src/assets'),
+      viteConfig: '@libertydev/vite/plugins/vite',
     },
     configurations: {
       production: {
-        buildTarget: `${options.projectName}:build:production`,
-        hmr: false,
+        fileReplacements: [
+          {
+            replace: joinPathFragments(
+              options.appProjectRoot,
+              `src/environments/environment.ts`
+            ),
+            with: joinPathFragments(
+              options.appProjectRoot,
+              `src/environments/environment.prod.ts`
+            ),
+          },
+        ],
       },
     },
   };
@@ -93,13 +92,25 @@ function createPreviewTarget(options: NormalizedSchema): TargetConfiguration {
   return {
     executor: '@libertydev/vite:preview',
     options: {
-      buildTarget: `${options.projectName}:build`,
-      hmr: true,
+      outputPath: joinPathFragments('dist', options.appProjectRoot),
+      baseHref: '/',
+      assets: joinPathFragments(options.appProjectRoot, 'src/assets'),
+      viteConfig: '@libertydev/vite/plugins/vite',
     },
     configurations: {
       production: {
-        buildTarget: `${options.projectName}:build:production`,
-        hmr: false,
+        fileReplacements: [
+          {
+            replace: joinPathFragments(
+              options.appProjectRoot,
+              `src/environments/environment.ts`
+            ),
+            with: joinPathFragments(
+              options.appProjectRoot,
+              `src/environments/environment.prod.ts`
+            ),
+          },
+        ],
       },
     },
   };

@@ -1,9 +1,44 @@
 {
-  "$schema": "http://json-schema.org/schema",
+  "title": "Web Application Build Target",
+  "description": "Web application build target options for Build Facade",
   "cli": "nx",
-  "title": "Build executor",
-  "description": "",
   "type": "object",
-  "properties": {},
-  "required": []
+  "properties": {
+    "outputPath": {
+      "type": "string",
+      "description": "The output path of the generated files."
+    },
+    "baseHref": {
+      "type": "string",
+      "description": "Base url for the application being built."
+    },
+    "assets": {
+      "type": "string",
+      "description": "List of static application assets.",
+    },
+    "fileReplacements": {
+      "description": "Replace files with other files in the build.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "replace": {
+            "type": "string",
+            "description": "The file to be replaced."
+          },
+          "with": {
+            "type": "string",
+            "description": "The file to replace with."
+          }
+        },
+        "additionalProperties": false,
+        "required": ["replace", "with"]
+      },
+      "default": []
+    },
+    "viteConfigConfig": {
+      "type": "string",
+      "description": "Path to the vite config"
+    },
+  }
 }

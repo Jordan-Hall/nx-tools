@@ -2,19 +2,36 @@
   "$schema": "http://json-schema.org/schema",
   "executors": {
     "build": {
-      "implementation": "./src/executors/build/executor",
+      "implementation": "./src/executors/build/build.impl",
       "schema": "./src/executors/build/schema.json",
       "description": "build executor"
     },
     "serve": {
-      "implementation": "./src/executors/build/executor",
+      "implementation": "./src/executors/serve/serve.impl",
+      "schema": "./src/executors/serve/schema.json",
+      "description": "serve executor"
+    },
+    "preview": {
+      "implementation": "./src/executors/preview/preview.impl",
+      "schema": "./src/executors/preview/schema.json",
+      "description": "preview executor"
+    },
+  },
+  "builders": {
+    "build": {
+      "implementation": "./src/executors/build/compat",
       "schema": "./src/executors/build/schema.json",
       "description": "build executor"
     },
-    "library": {
-      "implementation": "./src/executors/build/executor",
-      "schema": "./src/executors/build/schema.json",
-      "description": "build executor"
+    "serve": {
+      "implementation": "./src/executors/serve/compat",
+      "schema": "./src/executors/serve/schema.json",
+      "description": "serve executor"
+    },
+    "preview": {
+      "implementation": "./src/executors/preview/compat",
+      "schema": "./src/executors/preview/schema.json",
+      "description": "preview executor"
     }
   }
 }
