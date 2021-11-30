@@ -3,5 +3,11 @@
   "version": "0.0.1",
   "main": "src/index.js",
   "generators": "./generators.json",
-  "executors": "./executors.json"
+  "executors": "./executors.json",
+  "dependencies": {
+    "@libertydev/vite": "*"
+  },
+  "repository": {
+    "url": "https://github.com/Jordan-Hall/nx-tools/tree/master/packages/solidjs"
+  }
 }
