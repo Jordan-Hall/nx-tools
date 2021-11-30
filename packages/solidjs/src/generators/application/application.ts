@@ -13,7 +13,7 @@ import {
   readProjectConfiguration
 } from '@nrwl/devkit';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
-import { ViteApplication } from '@libertydev/vite';
+import { applicationGenerator as viteApplicationGenerator } from '@libertydev/vite';
 import { SolidVitePluginVersion } from './lib/versions';
 import { join } from 'path';
 import { solidjsVersion } from '../../utils/version';
@@ -30,7 +30,7 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
   const { appsDir } = getWorkspaceLayout(host);
   const appProjectRoot = normalizePath(`${appsDir}/${appDirectory}`);
 
-  tasks.push(await ViteApplication(host, {
+  tasks.push(await viteApplicationGenerator(host, {
     ...schema,
     skipFormat: true,
   }));

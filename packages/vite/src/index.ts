@@ -1,7 +1,2 @@
-import ViteInit from './generators/init/init';
-import ViteApplication from './generators/application/application';
-export default ViteInit;
-export {
-  ViteApplication,
-  ViteInit,
-}
+export *  from './generators/init/init';
+export *  from './generators/application/application';

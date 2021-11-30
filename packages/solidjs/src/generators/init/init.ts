@@ -7,6 +7,7 @@ import {
   GeneratorCallback
 } from '@nrwl/devkit';
 import { jestInitGenerator } from '@nrwl/jest';
+import { viteInitGenerator } from '@libertydev/vite';
 import { setDefaultCollection } from '@nrwl/workspace/src/utilities/set-default-collection';
 
 import {
@@ -14,13 +15,6 @@ import {
 } from '../../utils/version';
 import { Schema } from './schema';
 
-
-function normalizeOptions(schema: Schema) {
-  return {
-    ...schema,
-    unitTestRunner: schema.unitTestRunner ?? 'jest',
-  };
-}
 
 function removeSolidjsFromDeps(tree: Tree) {
   updateJson(tree, 'package.json', (json) => {
@@ -30,15 +24,10 @@ function removeSolidjsFromDeps(tree: Tree) {
 }
 
 
-
 export async function solidjsInitGenerator(tree: Tree, schema: Schema) {
-  const options = normalizeOptions(schema);
   setDefaultCollection(tree, '@libertydev/solidjs');
 
-  let jestInstall: GeneratorCallback;
-  if (options.unitTestRunner === 'jest') {
-    jestInstall = await jestInitGenerator(tree, {});
-  }
+  await viteInitGenerator(tree, schema)
 
   removeSolidjsFromDeps(tree);
 
@@ -54,9 +43,6 @@ export async function solidjsInitGenerator(tree: Tree, schema: Schema) {
   }
 
   return async () => {
-    if (jestInstall) {
-      await jestInstall()
-    }
     await installTask();
   };
 }

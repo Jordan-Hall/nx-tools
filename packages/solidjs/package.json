@@ -1,11 +1,11 @@
 {
   "name": "@libertydev/solidjs",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
   "dependencies": {
-    "@libertydev/vite": "*"
+    "@libertydev/vite": "^0.0.5"
   },
   "repository": {
     "url": "https://github.com/Jordan-Hall/nx-tools/tree/master/packages/solidjs"
