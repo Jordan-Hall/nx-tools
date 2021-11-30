@@ -144,17 +144,10 @@ function addProject(host: Tree, options: NormalizedSchema) {
       outputs: ['{options.outputPath}'],
       options: {
         outputPath: `dist/${libsDir}/${options.projectDirectory}`,
-        tsConfig: `${options.projectRoot}/tsconfig.lib.json`,
-        project: `${options.projectRoot}/package.json`,
+        packageJson: `${options.projectRoot}/package.json`,
+        assets: `${options.projectRoot}/assets`,
         entryFile: `${options.projectRoot}/src/index.ts`,
         viteConfig: `@libertydev/vite/plugins/vite-package`,
-        assets: [
-          {
-            glob: `${options.projectRoot}/README.md`,
-            input: '.',
-            output: '.',
-          },
-        ],
       },
     };
   }
@@ -205,6 +198,7 @@ function createFiles(host: Tree, options: NormalizedSchema) {
       ...names(options.name),
       tmpl: '',
       offsetFromRoot: offsetFromRoot(options.projectRoot),
+      libraryImport: options.importPath
     }
   );
 

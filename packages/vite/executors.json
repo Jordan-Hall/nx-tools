@@ -15,6 +15,11 @@
       "implementation": "./src/executors/preview/preview.impl",
       "schema": "./src/executors/preview/schema.json",
       "description": "preview executor"
+    },
+    "package": {
+      "implementation": "./src/executors/package/package.impl",
+      "schema": "./src/executors/preview/schema.json",
+      "description": "Build package"
     }
   },
   "builders": {
@@ -32,6 +37,11 @@
       "implementation": "./src/executors/preview/compat",
       "schema": "./src/executors/preview/schema.json",
       "description": "preview executor"
+    },
+    "package": {
+      "implementation": "./src/executors/package/compat",
+      "schema": "./src/executors/preview/schema.json",
+      "description": "Build package"
     }
   }
 }
