@@ -1,7 +1,6 @@
 import { Schema } from './schema';
 import { preview, UserConfig, UserConfigExport, resolveConfig, printHttpServerUrls, InlineConfig } from 'vite';
-import { ExecutorContext } from '@nrwl/devkit';
-import { deepmerge } from '../../utils/deep-merge';
+import { ExecutorContext, joinPathFragments } from '@nrwl/devkit';
 import baseConfig from '../../../plugins/vite';
 
 async function ensureUserConfig(config: UserConfigExport, mode: string): Promise<UserConfig> {
@@ -11,28 +10,21 @@ async function ensureUserConfig(config: UserConfigExport, mode: string): Promise
   return await Promise.resolve(config);
 }
 
-export default async function* runExecutor(
+export default async function runExecutor(
   options: Schema,
   context: ExecutorContext,
 ) {
-  console.log('Executor ran for Build', options);
   const project = context.workspace.projects[context.projectName];
-
   const viteBaseConfig = await ensureUserConfig(baseConfig, context.configurationName);
-  let extendedConfig: UserConfigExport;
-  if (options.viteConfig !== '@libertydev/vite/plugin/vite') {
-    extendedConfig = await ensureUserConfig((await import(options.viteConfig)).default, context.configurationName);
-  }
-  const actualViteConfig = deepmerge(viteBaseConfig, extendedConfig) as UserConfig;
 
   const config: InlineConfig = {
-    ...actualViteConfig,
+    ...viteBaseConfig,
     publicDir: options.assets,
-    configFile: false,
+    configFile: options.viteConfig === '@libertydev/vite/plugin/vite' ? false : joinPathFragments(`${context.root}/${options.viteConfig}`),
     root: project.root,
     base: options.baseHref,
     build: {
-      ...actualViteConfig.build,
+      ...viteBaseConfig.build,
       outDir: options.outputPath,
       reportCompressedSize: true,
       cssCodeSplit: true,
@@ -55,8 +47,17 @@ export default async function* runExecutor(
     printHttpServerUrls(previewServer, config as any);
   }
 
-  yield { success: true };
-  // This Promise intentionally never resolves, leaving the process running
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  await new Promise<{ success: boolean }>(() => {});
+  await new Promise<void>((resolve, reject) => {
+    previewServer.on('event', (data) => {
+      if (data.code === 'END') {
+        resolve();
+      } else if (data.code === 'ERROR') {
+        reject();
+      }
+    });
+  });
+
+  await previewServer.close()
+
+  return { success: true };
 }

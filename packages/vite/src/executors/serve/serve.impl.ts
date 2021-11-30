@@ -1,8 +1,8 @@
 import { Schema } from './schema';
-import { createServer, printHttpServerUrls, UserConfig, UserConfigExport, InlineConfig } from 'vite';
-import { ExecutorContext } from '@nrwl/devkit';
-import { deepmerge } from '../../utils/deep-merge';
+import { createServer, printHttpServerUrls, UserConfig, UserConfigExport, InlineConfig, } from 'vite';
+import { ExecutorContext, joinPathFragments } from '@nrwl/devkit';
 import baseConfig from '../../../plugins/vite';
+
 
 async function ensureUserConfig(config: UserConfigExport, mode: string): Promise<UserConfig> {
   if (typeof config === 'function') {
@@ -11,28 +11,22 @@ async function ensureUserConfig(config: UserConfigExport, mode: string): Promise
   return await Promise.resolve(config);
 }
 
-export default async function* runExecutor(
+export default async function runExecutor(
   options: Schema,
   context: ExecutorContext,
 ) {
-  console.log('Executor ran for Build', options);
   const project = context.workspace.projects[context.projectName];
 
   const viteBaseConfig = await ensureUserConfig(baseConfig, context.configurationName);
-  let extendedConfig: UserConfigExport;
-  if (options.viteConfig !== '@libertydev/vite/plugin/vite') {
-    extendedConfig = await ensureUserConfig((await import(options.viteConfig)).default, context.configurationName);
-  }
-  const actualViteConfig = deepmerge(viteBaseConfig, extendedConfig) as UserConfig;
 
   const config: InlineConfig = {
-    ...actualViteConfig,
+    ...viteBaseConfig,
     publicDir: options.assets,
-    configFile: false,
+    configFile: options.viteConfig === '@libertydev/vite/plugin/vite' ? false : joinPathFragments(`${context.root}/${options.viteConfig}`),
     root: project.root,
     base: options.baseHref,
     build: {
-      ...actualViteConfig.build,
+      ...viteBaseConfig.build,
       outDir: options.outputPath,
       reportCompressedSize: true,
       cssCodeSplit: true,
@@ -52,9 +46,17 @@ export default async function* runExecutor(
     printHttpServerUrls(server as any, config as any);
   }
 
+  await new Promise<void>((resolve, reject) => {
+    server.watcher.on('event', (data) => {
+      if (data.code === 'END') {
+        resolve();
+      } else if (data.code === 'ERROR') {
+        reject();
+      }
+    });
+  });
 
-  yield { success: true };
-  // This Promise intentionally never resolves, leaving the process running
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  await new Promise<{ success: boolean }>(() => {});
+  await server.close()
+
+  return { success: true };
 }

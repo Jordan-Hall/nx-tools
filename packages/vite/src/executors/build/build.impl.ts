@@ -1,7 +1,6 @@
 import { Schema } from './schema';
 import { build, UserConfig, UserConfigExport } from 'vite';
-import { ExecutorContext } from '@nrwl/devkit';
-import { deepmerge } from '../../utils/deep-merge';
+import { ExecutorContext, joinPathFragments } from '@nrwl/devkit';
 import baseConfig from '../../../plugins/vite';
 
 async function ensureUserConfig(config: UserConfigExport, mode: string): Promise<UserConfig> {
@@ -15,24 +14,17 @@ export default async function runExecutor(
   options: Schema,
   context: ExecutorContext,
 ) {
-  console.log('Executor ran for Build', options);
   const project = context.workspace.projects[context.projectName];
-
   const viteBaseConfig = await ensureUserConfig(baseConfig, context.configurationName);
-  let extendedConfig: UserConfigExport;
-  if (options.viteConfig !== '@libertydev/vite/plugin/vite') {
-    extendedConfig = await ensureUserConfig((await import('../../../plugins/vite')).default, context.configurationName);
-  }
-  const actualViteConfig = deepmerge(viteBaseConfig, extendedConfig) as UserConfig;
 
   await build({
-    ...actualViteConfig,
-    configFile: false,
+    ...viteBaseConfig,
+    configFile: options.viteConfig === '@libertydev/vite/plugin/vite' ? false : joinPathFragments(`${context.root}/${options.viteConfig}`),
     root: project.root,
     base: options.baseHref,
     publicDir: options.assets,
     build: {
-      ...actualViteConfig.build,
+      ...viteBaseConfig.build,
       outDir: options.outputPath,
       reportCompressedSize: true,
       cssCodeSplit: true,
