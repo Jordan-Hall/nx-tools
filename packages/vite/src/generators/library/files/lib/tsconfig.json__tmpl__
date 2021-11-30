@@ -1,5 +1,5 @@
 {
-  "extends": "<%= offset %>tsconfig.base.json",
+  "extends": "<%= offsetFromRoot %>tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
