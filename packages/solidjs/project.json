@@ -1,0 +1,56 @@
+{
+  "root": "packages/solidjs",
+  "sourceRoot": "packages/solidjs/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/solidjs/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/solidjs"],
+      "options": {
+        "jestConfig": "packages/solidjs/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/solidjs",
+        "tsConfig": "packages/solidjs/tsconfig.lib.json",
+        "packageJson": "packages/solidjs/package.json",
+        "main": "packages/solidjs/src/index.ts",
+        "assets": [
+          "packages/solidjs/*.md",
+          {
+            "input": "./packages/solidjs/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/solidjs/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./packages/solidjs",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./packages/solidjs",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}
