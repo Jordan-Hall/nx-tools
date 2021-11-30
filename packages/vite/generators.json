@@ -32,6 +32,6 @@
       "aliases": ["app"],
       "x-type": "application",
       "description": "Create a node application"
-    },
+    }
   }
 }
