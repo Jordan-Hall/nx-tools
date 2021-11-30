@@ -16,6 +16,7 @@ import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-ser
 import { ViteApplication } from '@libertydev/vite';
 import { SolidVitePluginVersion } from './lib/versions';
 import { join } from 'path';
+import { solidjsVersion } from '../../utils/version';
 
 
 export async function applicationGenerator(host: Tree, schema: Schema) {
@@ -23,6 +24,8 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
   const appDirectory = schema.directory
     ? `${names(schema.directory).fileName}/${names(schema.name).fileName}`
     : names(schema.name).fileName;
+
+  const fileName = schema.pascalCaseFiles ? 'App' : 'app';
 
   const { appsDir } = getWorkspaceLayout(host);
   const appProjectRoot = normalizePath(`${appsDir}/${appDirectory}`);
@@ -34,7 +37,9 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
 
   addDependenciesToPackageJson(
     host,
-    {},
+    {
+      'solid-js': solidjsVersion
+    },
     {
       "vite-plugin-solid": SolidVitePluginVersion
     }
@@ -45,11 +50,24 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
     host.delete(viteConfigPath)
   }
 
+  host.delete(
+    `${appProjectRoot}/src/app/${fileName}.spec.ts`
+  );
+  host.delete(
+    `${appProjectRoot}/src/app/${fileName}.ts`
+  );
+  host.delete(
+    `${appProjectRoot}/index.html`
+  );
+
   generateFiles(
     host,
     join(__dirname, '../files'),
     appProjectRoot,
-    {}
+    {
+      tmpl: '',
+      fileName: fileName
+    }
   );
 
   const projectName = names(schema.name).name;
