@@ -62,7 +62,7 @@ export async function applicationGenerator(host: Tree, schema: Schema) {
 
   generateFiles(
     host,
-    join(__dirname, '../files'),
+    join(__dirname, './files'),
     appProjectRoot,
     {
       tmpl: '',
