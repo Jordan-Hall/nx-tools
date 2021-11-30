@@ -33,5 +33,8 @@
   "dependencies": {
     "tslib": "^2.0.0",
     "vite": "^2.6.14"
+  },
+  "repository": {
+    "url": "https://github.com/Jordan-Hall/nx-tools"
   }
 }
