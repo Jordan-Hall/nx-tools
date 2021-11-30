@@ -14,7 +14,7 @@
     },
     "assets": {
       "type": "string",
-      "description": "List of static application assets.",
+      "description": "List of static application assets."
     },
     "fileReplacements": {
       "description": "Replace files with other files in the build.",
@@ -39,6 +39,6 @@
     "viteConfigConfig": {
       "type": "string",
       "description": "Path to the vite config"
-    },
+    }
   }
 }

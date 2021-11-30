@@ -11,7 +11,7 @@ async function ensureUserConfig(config: UserConfigExport, mode: string): Promise
   return await Promise.resolve(config);
 }
 
-export default async function runExecutor(
+export default async function* runExecutor(
   options: Schema,
   context: ExecutorContext,
 ) {
@@ -53,7 +53,8 @@ export default async function runExecutor(
   }
 
 
-  return {
-    success: true,
-  };
+  yield { success: true };
+  // This Promise intentionally never resolves, leaving the process running
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  await new Promise<{ success: boolean }>(() => {});
 }
