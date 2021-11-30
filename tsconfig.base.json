@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@libertydev/vite": ["packages/vite/src/index.ts"],
+      "@libertydev/vite": ["packages/vite/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
